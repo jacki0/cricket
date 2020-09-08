@@ -4,6 +4,7 @@ import random
 
 def get_request(extract_url):
     """ Sends a GET request to a random URL from the list.
+    
     """
     get = requests.get(extract_url)
 
@@ -12,6 +13,7 @@ def get_request(extract_url):
 
 def url_extraction():
     """ Chooses a random URL from the list.
+
     """
     url_list = []
     with open('list.txt') as file:
