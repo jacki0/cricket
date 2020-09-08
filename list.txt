@@ -1,0 +1,8 @@
+google.com
+vk.com
+un.org
+github.com
+deepl.com
+reddit.com
+python.org
+kubernetes.io
