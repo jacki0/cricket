@@ -6,7 +6,7 @@ import threading
 class PerpetualTimer():
     def __init__(self, t, hfunction):
         self.hFunction = hfunction
-        self.t=t
+        self.t = t
         self.thread = threading.Timer(self.t, self.handle_function)
         self.hFunction = hfunction
 
@@ -22,14 +22,17 @@ class PerpetualTimer():
         self.thread.cancel()
 
 
-def get_request(get=None):
-    """ Sends a GET request to a random URL from the list.
-
+def request():
+    """ Sends a GET or POST request to a random URL from the list.
     """
+    request_type = random.choice(['GET', 'POST'])
     try:
-        get = requests.get(url_extraction())
+        if request_type == 'POST':
+            output_request = requests.post(url_extraction())
+        else:
+            output_request = requests.get(url_extraction())
     finally:
-        return get
+        return output_request
 
 
 def url_extraction(url_list=[]):
@@ -41,5 +44,5 @@ def url_extraction(url_list=[]):
     return random.choice(['http://', 'https://']) + random.choice(url_list)
 
 
-t = PerpetualTimer(9, get_request)
+t = PerpetualTimer(77, request)
 t.start()
