@@ -28,11 +28,11 @@ def request():
     request_type = random.choice(['GET', 'POST'])
     try:
         if request_type == 'POST':
-            output_request = requests.post(url_extraction())
+            return requests.post(url_extraction(), timeout=1.5)
         else:
-            output_request = requests.get(url_extraction())
-    finally:
-        return output_request
+            return requests.get(url_extraction(), timeout=1.5)
+    except Exception as ex:
+        return ex
 
 
 def url_extraction(url_list=[]):
@@ -44,5 +44,5 @@ def url_extraction(url_list=[]):
     return random.choice(['http://', 'https://']) + random.choice(url_list)
 
 
-t = PerpetualTimer(77, request)
+t = PerpetualTimer(3, request)
 t.start()
