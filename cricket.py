@@ -1,6 +1,7 @@
 import requests
 import random
 import threading
+from datetime import datetime
 
 
 class PerpetualTimer():
@@ -24,15 +25,22 @@ class PerpetualTimer():
 
 def request():
     """ Sends a GET or POST request to a random URL from the list.
+        Logs date, time, URL, request type, reply and optionally exception.
+
     """
+    use_url = url_extraction()
     request_type = random.choice(['GET', 'POST'])
     try:
+        log = [str(datetime.today()), use_url]
+        log[0] = log[0][:log[0].find('.')]
+        log.append(request_type)
         if request_type == 'POST':
-            return requests.post(url_extraction(), timeout=1.5)
+            log.append(requests.post(use_url, timeout=1.5))
         else:
-            return requests.get(url_extraction(), timeout=1.5)
+            log.append(requests.get(use_url, timeout=1.5))
     except Exception as ex:
-        return ex
+        log.append(ex)
+    return log
 
 
 def url_extraction(url_list=[]):
