@@ -36,22 +36,27 @@ def request():
         log[0] = log[0][:log[0].find('.')]
         log.append(request_type)
         if request_type == 'POST':
-            log.append(str(requests.post(use_url, timeout=1.5))[1:-1])
+            log.append(str(requests.post(use_url, timeout=req_timeout))[1:-1])
         else:
-            log.append(str(requests.get(use_url, timeout=1.5))[1:-1])
+            log.append(str(requests.get(use_url, timeout=req_timeout))[1:-1])
     except Exception as ex:
         log.append(str(ex))
     json.dump(log, open('log.json', 'a'), indent=0)
 
 
-def url_extraction(url_list=[]):
+def url_extraction():
     """ Chooses a random URL from the list.
-
     """
-    with open('list.txt') as file:
-        url_list = [row.strip() for row in file]
-    return random.choice(['http://', 'https://']) + random.choice(url_list)
+    return random.choice(['http://', 'https://']) + random.choice(urls)
 
 
-t = PerpetualTimer(91, request)
+with open('config.json') as file:
+    conf = json.load(file)
+    min_interval = conf['min_interval']
+    max_interval = conf['max_interval']
+    req_timeout = conf['timeout']
+    urls = conf['urls']
+
+
+t = PerpetualTimer(random.randint(min_interval, max_interval), request)
 t.start()
