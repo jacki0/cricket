@@ -1,6 +1,7 @@
 import requests
 import random
 import threading
+import json
 from datetime import datetime
 
 
@@ -35,12 +36,12 @@ def request():
         log[0] = log[0][:log[0].find('.')]
         log.append(request_type)
         if request_type == 'POST':
-            log.append(requests.post(use_url, timeout=1.5))
+            log.append(str(requests.post(use_url, timeout=1.5))[1:-1])
         else:
-            log.append(requests.get(use_url, timeout=1.5))
+            log.append(str(requests.get(use_url, timeout=1.5))[1:-1])
     except Exception as ex:
-        log.append(ex)
-    return log
+        log.append(str(ex))
+    json.dump(log, open('log.json', 'a'), indent=0)
 
 
 def url_extraction(url_list=[]):
@@ -52,5 +53,5 @@ def url_extraction(url_list=[]):
     return random.choice(['http://', 'https://']) + random.choice(url_list)
 
 
-t = PerpetualTimer(3, request)
+t = PerpetualTimer(91, request)
 t.start()
